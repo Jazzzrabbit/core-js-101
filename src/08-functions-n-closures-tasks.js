@@ -15,16 +15,18 @@
  * which works like applying function f to the result of applying function g to x, i.e.
  *  getComposition(f,g)(x) = f(g(x))
  *
- * @param {Function} f
- * @param {Function} g
+ * @param {Function} _f
+ * @param {Function} _g
  * @return {Function}
  *
  * @example
  *   getComposition(Math.sin, Math.asin)(x) => Math.sin(Math.asin(x))
  *
  */
-function getComposition(/* f, g */) {
-  throw new Error('Not implemented');
+function getComposition(f, g) {
+  return function foo(n) {
+    return f(g(n));
+  };
 }
 
 
@@ -44,8 +46,10 @@ function getComposition(/* f, g */) {
  *   power05(16) => 4
  *
  */
-function getPowerFunction(/* exponent */) {
-  throw new Error('Not implemented');
+function getPowerFunction(exponent) {
+  return function foo(n) {
+    return n ** exponent;
+  };
 }
 
 
@@ -81,8 +85,16 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
+function memoize(func) {
+  const cache = new Map();
+
+  return function foo(x) {
+    if (!cache.has(x)) {
+      cache.set(x, func(foo));
+    }
+
+    return cache.get(x);
+  };
 }
 
 
@@ -169,8 +181,12 @@ function partialUsingArguments(/* fn, ...args1 */) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction(/* startFrom */) {
-  throw new Error('Not implemented');
+function getIdGeneratorFunction(startFrom) {
+  let counter = startFrom - 1;
+  return function foo() {
+    counter += 1;
+    return counter;
+  };
 }
 
 

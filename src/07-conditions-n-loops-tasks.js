@@ -220,8 +220,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -280,8 +280,10 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  if (num < 10) return num;
+
+  return getDigitalRoot(String(num).split('').reduce((acc, val) => +acc + +val));
 }
 
 
@@ -306,8 +308,41 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const stack = [];
+  const arr = str.split('');
+  const isOpen = ['{', '(', '[', '<'];
+  const controlArr = str.split('');
+
+  const clearStackAndControlArr = () => {
+    stack.pop();
+    controlArr.pop();
+    controlArr.pop();
+  };
+
+  for (let i = 0; i < arr.length; i += 1) {
+    if (isOpen.includes(arr[i])) {
+      stack.push(arr[i]);
+    }
+
+    if (arr[i] === '}' && stack[stack.length - 1] === '{') {
+      clearStackAndControlArr();
+    }
+
+    if (arr[i] === ']' && stack[stack.length - 1] === '[') {
+      clearStackAndControlArr();
+    }
+
+    if (arr[i] === ')' && stack[stack.length - 1] === '(') {
+      clearStackAndControlArr();
+    }
+
+    if (arr[i] === '>' && stack[stack.length - 1] === '<') {
+      clearStackAndControlArr();
+    }
+  }
+
+  return !!(stack.length === 0 && controlArr.length === 0);
 }
 
 
